@@ -39,9 +39,13 @@ Requisitos:
 
 - Lojistas **só recebem** transferências, não enviam dinheiro para ninguém.
 
-- Antes de realizar a transferência, devemos verificar se o consumidor não é um possível fraudador. A medição disso é feito com base em um score que vai de 0 a 100, sendo 0, um possível fraudador, e 100, um consumidor com um score excelente. Pra esse cenário, só vamos aprovar as transações para consumidores com score acima ou igual a 75. Utilize esse mock para simular (https://run.mocky.io/v3/8088c898-89bb-47b5-a63a-694e1b97d1b8). Esse score só é atualizado uma vez por dia, então você não precisa verificar a cada transação.
+- Antes de realizar uma transferência, devemos verificar 3 pontos:
 
-- Após a verificação de risco, antes de finalizar a transferência, devemos consultar um serviço autorizador externo, use este mock para simular (https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6).
+    - **a)** se o pagador não é um possível fraudador. A medição disso é feito com base em um score que vai de 0 a 100; Pra esse cenário, só vamos aprovar as transações para consumidores com score acima ou igual a 75. Utilize esse mock para simular (https://run.mocky.io/v3/8088c898-89bb-47b5-a63a-694e1b97d1b8). Leve em consideração que esse score só é atualizado uma vez a cada 24 horas;
+
+    - **b)** se o pagador tem fundos para realizar a transação. Para isso devemos consultar um serviço autorizador externo, use este mock para simular (https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6).
+
+    - **c)** se a transação é elegível para concessão de cashback ou não. Para isso, devemos consultar uma api externa. Use este mock para simular (https://run.mocky.io/v3/177c6f18-010e-4c98-bfb5-78d95961c070). Caso ele tenha algum cashback, você deve adicionar esse valor à carteira do usuário pagador após a finalização da transferência.
 
 - A operação de transferência deve ser uma transação (ou seja, revertida em qualquer caso de inconsistência) e o dinheiro deve voltar para a carteira do usuário que envia. 
 
@@ -86,6 +90,8 @@ A correção qualitativa será durante a entrevista e levará em conta os seguin
 - Cuidado com itens de segurança
 - Arquitetura (estruturar o pensamento antes de escrever)
 - Carinho em desacoplar componentes (outras camadas, service, repository)
+- Se a aplicação foi escrita objetivando obter o menor tempo de resposta possível
+- A gente prioriza bastante um banco bem modelado.
 
 De acordo com os critérios acima, iremos avaliar seu teste para avançarmos para a entrevista técnica.
 Caso não tenha atingido aceitavelmente o que estamos propondo acima, não iremos prosseguir com o processo.
